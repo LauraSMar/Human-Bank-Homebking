@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+</head>
+
+  <title>Login</title>
+  <!-- <base href="/"> -->
+  <link rel="icon" type="image/png" href="imagen.png" sizes="64x64">
+  <link rel="stylesheet" href="styles/web.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11">
+  </script><link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <style>
+    body {
+
+      background-image: linear-gradient(to right top, #eaeba2, #d7e054, #e5e48e, #a4dde7, #e2eec7);
+      height: 150vh;
+     /* margin: 10px;*/
+      padding: 10px;
+    }
+  </style>
+
+
+</head>
+<body>
+  <main id="app">
+        
+   
+        <div class="container"><!-- Inicio del Contenedor -->  
+           
+            <div class="row justify-content-center">
+              <div class="col-sm-12">
+                <div  id="header">
+                  <img id="logo" src="./img/HUMAN BANK.png" alt="Logo">
+                  <h1>Human Bank, unique like you!</h1>
+                </div>
+    
+              </div>
+            </div> <!-- Final del Div del Header -->  
+
+          <div class="row justify-content-around">
+
+                  <div class="d-none d-md-block col-sm-8">
+
+                    <div class="container"style="padding: auto;margin: 4em;border: radius 10px;">
+                    
+                    <img src="./img/FronLogin.jpg" alt="Italian Trulli">
+                    
+                  </div>
+
+                  </div><!-- Final del Div de la Imagen desaparece en formato pequeño -->  
+
+            <div class="col-sm-4">
+                    <form id="registerForm">
+                      <div class="d-flex row align-items-center"
+                        style="background-color: rgb(241, 238, 238);margin: 4em;border-radius: 10px;border-color: rgb(250, 243, 243);">
+                        <img class="mb-4" src="./img/piggy-bank.svg" alt="" width="72" height="57">
+                        <h6 class="h3 mb-3 fw-normal">Your account</h6>
+                      </div>
+                        <div class="form-floating">
+                          <input v-model="email" type="email" class="form-control" id="floatingInput" aria-describedby="emailHelp"
+                            placeholder="Enter email">
+                          <!-- {{email}}  -->
+                          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                          <label for="floatingInput">Email address</label>
+                        </div>
+
+                        <div class="form-floating">
+                          <label for="exampleInputPassword1" class="col-sm-2 col-form-label"></label>
+                          <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                          <!-- {{password}}  -->
+                        </div>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input" @change="guardar_localstorage"id="exampleCheck1">
+                          <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                        </div>
+                        <button @click="send()" type="btn" class="w-100 btn btn-lg btn-primary">Sign In</button>
+
+                        <!-- Register buttons -->
+                          <div class="text-center">
+                            <p>Not a member?</p>
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                              Register
+                            </button>
+
+                            <p class="mt-5 mb-3 text-muted">&copy; Human Bank 2021</p>
+
+                          </div>
+                  </form> 
+            </div> <!-- Final del Div del From 4 columnas y pasa a 12 en Celular -->  
+            
+          </div><!-- Final del Div Row de ambos elementos -->  
+        </div><!-- Final del Contenedor -->  
+
+
+        <div class="container"><!-- Inicio del Contenedor del Modal --> 
+
+
+          <!-- The Modal -->
+          <div class="modal" id="myModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                 <h6 class="modal-title">Registration</h6>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 
+
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <p v-if="errors.length">
+                    <b>Please check this:</b>
+                    <ul>
+                      <li v-for="error in errors"style="color-text:red">{{ error }}</li>
+                    </ul>
+                  </p>
+                  <form 
+                  id="app"
+                  @submit="checkForm"
+                  method="post"
+                 class="justify-content-center align-items-center">
+
+
+                    <!-- Name input -->
+                    <div class="form-outline mb-4">
+                      <input v-model="firstName" type="text" class="form-control" required />
+                      <label class="form-label" for="firstName" >Name </label>
+                      {{firsName}}
+
+                    </div>
+                    <div class="form-outline mb-4">
+                      <input v-model="lastName" type="text"  class="form-control" required />
+                      <label class="form-label" for="lastName" required>LastName </label>
+
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                      <input v-model="email" type="email"  class="form-control" required />
+                      <label class="form-label" for="email" required>Email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-4">
+                      <input v-model="password" type="password"  class="form-control" required />
+                      <label class="form-label" for="password" required>Password</label>
+                    </div>
+
+                    <!-- Repeat Password input -->
+                    <div class="form-outline mb-4">
+                      <input v-model="password2" type="password" class="form-control"
+                        required />
+                      <label class="form-label" for="password2" required>Repeat
+                        password</label>
+                    </div>
+                    
+                    <button v-show="!noError" id="ready" type="submit"
+                    value="Sign In" class="btn btn-primary btn-block mb-3"> Sign In 
+                    </button>
+                  
+
+                    <!-- Submit button-->
+                    <button v-show="noError" type="submit" class="btn btn-success btn-block mb-3"data-dismiss="modal">Log In Right Now!</button> 
+
+
+
+                  </form> <!-- Final del formulario--> 
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+  </main>
+
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./js/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+    crossorigin="anonymous"></script>
+  </body>
+
+</html>

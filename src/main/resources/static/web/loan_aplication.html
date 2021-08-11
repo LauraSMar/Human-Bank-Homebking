@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Loans For you</title>
+  <!-- <base href="/"> -->
+  <link rel="icon" type="image/png" href="imagen.png" sizes="64x64">
+  <link rel="stylesheet" href="styles/web.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+/>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+  <style>
+    body {
+      background-image: linear-gradient(to right top, #eaeba2, #d7e054, #e5e48e, #a4dde7, #e2eec7);
+      height: 150vh;
+      margin: 10px;
+      padding: 10px;
+    }
+    html {
+  font-size: 15px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.card-deck .card {
+  margin-left: 1em;
+  margin-top: 2em;
+  border-radius: 15px;
+  min-width: 150px;
+  max-width: 300px;
+
+}
+  </style>
+
+
+</head>
+<body>
+  <main id="app">
+
+    
+  
+      </nav>
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="./img/HUMAN BANK.png"alt="" width="50" height="50" class="d-inline-block align-text-top">
+            Human Bank
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand"@click="redireccionar(this.clientid)" href="#">Cards</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" @click="redireccionar2(this.clientid)"  href="#">Accounts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#"data-toggle="modal" data-target="#exampleModal">Aply for Loan</a>
+              </li>
+              
+            </ul>
+            <div class="d-flex">
+             
+              <button @click="exit" class="btn btn-outline-warning" type="submit">Logout</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Request Loan</h5>
+        <button type="button" @click="resetForm" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+
+        <div class="col-auto">
+          <form id="LoanForm" class="flex-md-row justify-content-center" >
+            <br>
+            
+            <div class="col-auto">
+                    <label  class="form-control"style="background-color: aquamarine;">Type of Loan</label>
+                      <!--Select de prestamos -->
+                    <select class="col-auto" v-model="nameLoan" id="selectLoan"style="width: 100%;">
+                      <option value="">Please choose your Loan</option>
+                      <option :value="loan" type= number v-for="loan in alloans">{{loan.id}} {{loan.name}} Maxime Amount $ {{loan.maxAmount}}</option>
+                  <!-- bindeo la variable loan y me guarda todo el objeto en value// cuando lo seleccionan me lo trae completo y puedo acceder asus propiedades-->
+                    </select>
+                  <!-- <span>{{nameLoan.id}}</span> -->
+                    
+            </div><br>
+                <div class="col-auto">
+                            <label for="Amount" class="form-control"style="background-color: aquamarine;">Amount</label>
+                            <input v-model=amountReq @keyup.enter="validateForm" class="form-control" id="amount" placeholder="Maxime Amount to Request" required>
+                        <!--Select de cuotas -->
+                        <br>
+                        <label  class="form-control"style="background-color: aquamarine;">Select Your Payments</label>
+                        <select class="col-auto" v-model="payments" id="selectquotes"style="width: 100%;">    
+                          <option  disabled value="">Please choose your payments</option>
+                          <option  :value="payments"  type= number v-for="(payments,index) in nameLoan.payments">{{payments}}</option>
+                        <!--Bindeo el valor de la cuota y uso el bindeo anterior del Select nameloan para mostrar el array de pagos -->
+                        </select>
+                        <br><br>
+                    <!-- <span>{{index}}}</span>    -->
+                        <label for="" class="form-control"style="background-color: aquamarine;">Interest Percent %</label> 
+                            <input :value="cal_quotes(amountReq,payments)" type="number" id="interesLabel"class="form-control"  readonly>
+                        <!-- <span>{{index}}</span> -->
+                </div><br>
+                <div class="d-flex col-auto justify-content-around" style="width: 100%;">
+                      <label for="" class="form-control"style="background-color: aquamarine;"> Request</label> 
+                      <input :value="amountReq" type="number" class="form-control"readonly>
+                      
+                      <label for="" class="form-control"style="background-color: aquamarine;"> Fee </label> 
+                      <input :value="calcula(amountReq,payments,cal_quotes(amountReq,payments))" type="number" class="form-control"  readonly> 
+                </div><br>
+
+                <div class="col-auto">
+                      <label for="your account" id="your_account" class="form-control" style="background-color: aquamarine;">Your Account</label> 
+                      <select class="col-auto" v-model="your_account" style="width: 100%;">
+                  
+                        <option  disabled value="">Please select one</option>
+                        <option v-for="account in accounts" >{{account.number}}</option>
+                        
+                      </select> 
+                </div><br>
+          </form>
+        </div>
+        
+        
+      
+      <div class="modal-footer">
+        <div v-show="error.length==0 && your_account!=''"id="bannerCards" class="container align-items-center" style="border-radius: 5px;">
+
+          <p>Please check your order before applying</p>
+   
+       </div>
+        <!-- <button type="button" class="btn btn-secondary" @click="resetForm" data-dismiss="modal">Close</button> -->
+        <button id="btn-applytoMoney"@click="validateForm"type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>
+     
+      
+      <!-- <a class="btn btn-outline-primary" href="#">Sign up</a> -->
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h6 class="display-4">Welcome {{this.clientName}}</h6>
+      <p class="lead">Discover the potential of homebanking, make your operations easy and enjoy time and life more </p>
+      <div class="row" v-show="okToast" id="Alert" class=" alert alert-primary" role="alert">
+        Don't have Loans, Please test a simulator!
+      </div>
+    </div>
+
+   
+
+    <!-- <div class="d-flex container-fluid" Comienza la tarjeta> -->
+      <div  class="flex-md-row justify-content-center">
+        
+            <div  class="card-deck  text-center justify-content-center ">
+                  <div v-for="info in alloans" class="card shadow-sm ">
+                      <div class="card-header">
+                        <h5 class="my-0 font-weight-normal"style:background-color="aquamarine">Loan for you:{{info.id}}</h5>
+                      </div>  <!-- <Fin Card Header> -->
+                      <div class="card-body">
+                        <h5 class="card-title pricing-card-title"> Maxime Available     {{formatMoney(info.maxAmount)}} <small class="text-muted"></small></h5>
+                        <img v-if="info.id==1" src="./img/Hipotecario.jpg" class="img-fluid" alt="1ra" />
+                        <img v-if="info.id==2" src="./img/Personal.jpg" class="img-fluid" alt="1ra" />
+                        <img v-if="info.id==3" src="./img/Automotriz.jpg" class="img-fluid" alt="1ra" />
+                        <ul class="animate__animated animate__bounce" style="background-color:orange;font-size: 16px;"> Monthly Fee: {{info.payments}}
+                        </ul>
+                        
+                        <input  type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                       <!--  <label class="btn btn-outline-success" for="btncheck1">Details</label>
+                        <label class="btn btn-outline-primary" for="btncheck1">No movements</label> -->
+                        
+                        
+                      </div> <!-- <Fin Card Body> -->
+                  </div><!-- <Fin Card Shadow> -->
+         
+             </div><!-- <Fin Card Deck> -->
+
+              <div class="col-sm-3-md-12">
+
+
+                <table v-show="ok" id="datetable1" class="table table-hover justify-content-center">
+                  <thead class="thead-dark">
+                    <tr>
+                      <td style="font-size:16px;text-align: center;background-color: aquamarine;"> Your Loans</td>
+                    </tr>
+                    <tr>
+                      <td>Loan</td>
+                      <td>Amount</td>
+                      <td>Number of Fees</td>
+                      <td>Monthly Fees</td> 
+                      <td>Interest</td>
+
+                    </tr>
+                  </thead>
+                  <tbody class="justify-content-end">
+                    <tr v-for="loan in loans">
+                      <td>{{(loan.name)}}</td>
+                      <td> {{formatMoney(loan.requestAmount)}}</td>
+                      <td>{{loan.quotes}}</td>
+                      <td> {{formatMoney(calcula(loan.requestAmount,loan.quotes,loan.interest))}}</td> 
+                      <td>{{loan.interest}} % </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                     
+
+              </div><!-- Final del Div de la Tabla Loans -->  
+             
+           
+
+     
+  
+   <!-- <Fin del Modal> -->
+   <!-- <Comienza el Footer> -->
+
+              <div class="container-fluid "> 
+                
+                <footer class="pt-4 my-md-5 pt-md-5 border-top">
+           
+                  <small class="d-block mb-3 text-muted">&copy; Something New</small>
+                
+                <div class="col-6 col-md">
+                  <h5>Features</h5>
+                  <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Customer Service</a></li>
+                    <li><a class="text-muted" href="#">About Us</a></li>
+                    <li><a class="text-muted" href="#">Promotions</a></li>
+                    
+                  </ul>
+                </footer> 
+                </div>
+ 
+                <!-- Footer -->
+                <div class="container-fluid">
+                  <footer style="background-color:rgb(247, 200, 16);text-align: center;">
+                    <h6>  © Copyright 2021 | Follow us! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                     <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+                   </svg> </h6>
+                  </footer>
+                 
+                </div>
+              </div>
+              
+
+
+
+  </main>
+
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./js/loans.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+    crossorigin="anonymous"></script>
+  </body>
+
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Login</title>
+  <link rel="icon" type="image/png" href="imagen.png" sizes="64x64">
+  <link rel="stylesheet" href="styles/web.css">
+  <link rel="stylesheet" href="./styles/card.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('[data-toggle="popover"]').popover();   
+    });
+    </script>
+  
+  <style>
+    body {
+
+      background-image: linear-gradient(to right top, #eaeba2, #d7e054, #e5e48e, #a4dde7, #e2eec7);
+     height: 150vh;
+      /* margin: 10px; */
+      padding: 10px;
+    }
+    html {
+  font-size: 16px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.container {
+  max-width: 960px;
+}
+
+.pricing-header {
+  max-width: 700px;
+}
+
+.card-deck .card {
+  margin-top: 2em;
+  border-radius: 15px;
+  min-width: 150px;
+  max-width: 300px;
+  /* max-width: 164px; */
+}
+  </style>
+
+
+</head>
+<body>
+  <main id="app">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-right: 0.5em;margin-left: 0.5em;">
+      <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <img src="./img/HUMAN BANK.png"alt="" width="50" height="50" class="d-inline-block align-text-top">
+              Human Bank
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+              <a class="navbar-brand"@click="redireccionar(this.clientid)" href="#">Accounts</a>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" @click="redireccionar2(this.clientid)"  href="#">Loans</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" v-show="accounts.length<3" @click="okCreate=true" href="#">New Account</a>
+                  </li> 
+                
+              </ul>
+
+              <div class="dropdown">
+                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                      About your Cards
+                    </a>
+                
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#"v-show="cards.length!=0"@click="payCard"data-bs-toggle="modal" data-bs-target="#exampleModal2">Pay Here</a></li>
+                    <li><a class="dropdown-item" href="#"v-show="cards.length!=0"data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</a></li>
+                    <li><a class="dropdown-item" href="#"v-show="cardCredito.length<3" @click="okProcess=true">Get New Credit Card</a></li>
+                    <li><a class="dropdown-item" href="#"v-show="cardDebito.length<3" @click="newCard">Get New Debit Card</a></li>
+                  </ul>
+              </div>
+          
+        </div>
+              <div class="d-flex">
+                <button @click="exit" class="btn btn-outline-warning" type="submit">Logout</button>
+              </div> 
+      </div>
+    </nav>
+
+    
+
+    <div id="bannerCards" class="container align-items-center" style="border-radius: 5px;">
+
+            <p style="margin: 0.5em;">You've {{cardDebito.length}}  Debit Card</p>
+            <p style="margin: 0.5em;">You've {{cardCredito.length}} Credit Card</p> 
+            <!-- <p id="a"class="button__text">Learn more...you can have up to 3 cards as maximum</p> -->
+
+   </div>
+   
+  
+<!-- Modal Borrar Tarjeta -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"data-backdrop="static" 
+data-keyboard="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="ModalCards"class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete your cards</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+      <div class=" col- sm-12 ">
+          
+
+         
+
+      <div class="container justify-content-around">
+         <h5 v-show="cardDebito.length!=0"> Debit Cards</h5>
+
+          <div v-show="cardDebito.length!=0"class="row justifiy-content-center">
+              <ul v-for="card in cardDebito">
+                <li>{{card.numbercard}}  {{card.colorCard}} {{card.untilDate}} <button @click="erase(card.id)" type="button" class="btn btn-outline-danger mb-3"> [x] Delete </button></li>
+              </ul>
+              </div>
+              <h5 v-show="cardCredito.length!=0"> Credit Cards</h5>
+              <div v-show="cardCredito.length!=0"  class=" row justifiy-content-center">
+              <ul v-for="card in cardCredito">
+                <li>{{card.numbercard}}  {{card.colorCard}} {{card.untilDate}} <button @click="erase(card.id)" type="button" class="btn btn-outline-danger mb-3"> [x] Delete</button></li>
+              </ul> 
+          </div>
+         
+        </div>
+      </div>
+     
+      </div>
+      <div class="modal-footer">
+        <button @click="CloseModal"type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!-- <button id="btn-EraseCard"type="button" class="btn btn-primary">Apply</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Pagar Tarjeta -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"data-backdrop="static" 
+data-keyboard="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div id="ModalCards"class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pay your cards with Transfer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+      <div class=" col- sm-12 ">
+
+      <div class="container justify-content-center">
+         
+          <h5 v-show="cardCredito.length!=0"> Credit Cards</h5>
+          <div v-show="cardCredito.length!=0"  class=" row justifiy-content-center">
+              <ul v-for="card in cardCredito">
+                <li>{{card.numbercard}}  {{(card.colorCard).slice(0,4)}} {{card.untilDate}} <button v-show="((selectedpayCard && !checked) || errors.length==0)" @click="payCard(card.id,selectedpayCard,amount)" type="button" id="btnpayCard" class="btn btn-outline-success mb-3">[$] Pay</button></li>
+              </ul> 
+          </div>
+
+
+          <div class="flex-md-row"  id="Alert" class=" alert alert-primary" role="alert">
+             Please select your account to process the payment, and click!
+          </div>
+          <br>
+          
+          <span style="margin:1em;">Debit in:</span>
+          <select v-show="accounts.length!=0" class="form-select" v-model="selectedpayCard" aria-label="size 3 select example" required>
+            <option  value="">Select the account to debit</option>
+            <option v-for="account in accounts">{{account.typeAccount}} - {{account.number}} $  {{account.balance}}</option>
+          </select> <br>
+
+          <div v-show="selectedpayCard" class="form-check input justifiy-content-center" style="width: 100%;">
+            <input v-show="selectedpayCard"class="form-check-input" type="checkbox"  v-model="checked" id="flex">
+           
+            <label class="form-check-label" for="checkbox">Modify Amount</label>
+          </div> <br>
+          <div v-show="checked">
+                <label for="moneytoPay">Money to Pay:</label>
+                <input @change="checkForm (e)" v-model="mtopay"type="number" min="0" required  ><br><br>
+                <span style="color: red;"v-for="error in errors" v-if="errors.length != 0">{{error}} </span>
+               
+          </div> 
+        </div>
+      </div>
+
+              
+     
+      </div>
+      <div class="modal-footer">
+        <button @click="CloseModal"type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+   
+  <!-- <Select del Color de la Tarjeta> -->
+        <div v-show="okProcess" id="v-model-select" style="margin: 4em;">
+          <span>Select the Color Card:</span>
+          <select v-model="selected">
+            
+            <option disabled value="">Please select one</option>
+            <option>Gold</option>
+            <option>Silver</option>
+            <option>Black</option>
+          
+          </select>
+          <button @click="okProcess=false" class="btn btn-dark"style="margin:1em" >[x]</button>
+          <button v-show=(selected!='') @click="newCardCredit"  class=" btn btn-primary" type="button"style="margin:1em"  >Create</button> 
+        
+        </div>
+              
+    <!-- <Fin del Select Tarjetas> -->         
+    <div class="col-sm-12 col-md-12 text-center justify-content-center">
+        
+     <div class="pt-4 my-md-5 pt-md-5 border-top"></div>
+
+
+     <div class="container-fluid">
+      <div class="row justify-content-center" style="width: 100%;">
+         
+
+
+          <div v-for="card in cardCredito" class="card">
+
+            
+
+            <div v-if="card.colorCard=='Gold'"style="background-color:rgb(168,146,20);"class="card__front card__part">
+              
+                    
+              <p class="card_numer">{{(card.numbercard).slice(0,4)}} {{(card.numbercard).slice(4,8)}} {{(card.numbercard).slice(8,12)}} {{(card.numbercard).slice(12,16)}}</p>
+              <div class="card__space-75">
+                <span class="card__label">Card Holder</span>
+                <p class="card__info">{{card.cardHolder}}</p>
+              </div>
+              <div class="card__space-25">
+                <span class="card__label">Expires</span>
+                      <p class="card__info">{{(card.untilDate).slice(2,7)}}</p>
+              </div>
+            </div>
+            
+            <div v-if="card.colorCard=='Gold'" style="background-color: rgb(168, 146, 20);"class="card__back card__part">
+              <div class="card__black-line"></div>
+              <div class="card__back-content">
+                <div class="card__secret">
+                  <p class="card__secret--last">{{card.cvv}}</p>
+              </div>
+          
+              </div>
+            </div>
+      
+            <div v-if="card.colorCard=='Silver'"style="background-color: rgb(175, 174, 172);"class="card__front card__part">
+             
+                <p class="card_numer">{{(card.numbercard).slice(0,4)}} {{(card.numbercard).slice(4,8)}} {{(card.numbercard).slice(8,12)}} {{(card.numbercard).slice(12,16)}}</p>
+                <div class="card__space-75">
+                  <span class="card__label">Card Holder</span>
+                  <p class="card__info">{{card.cardHolder}}</p>
+                </div>
+                <div class="card__space-25">
+                  <span class="card__label">Expires</span>
+                        <p class="card__info">{{(card.untilDate).slice(2,7)}}</p>
+                </div>
+              </div>
+              
+              <div v-if="card.colorCard=='Silver'" style="background-color: rgb(175, 174, 172);"class="card__back card__part">
+                <div class="card__black-line"></div>
+                <div class="card__back-content">
+                  <div class="card__secret">
+                    <p class="card__secret--last">{{card.cvv}}</p>
+                </div>
+           
+                  
+                </div>
+              </div>
+      
+              <div v-if="card.colorCard=='Black'"style="background-color: black;"class="card__front card__part">
+      
+                  <p class="card_numer">{{(card.numbercard).slice(0,4)}} {{(card.numbercard).slice(4,8)}} {{(card.numbercard).slice(8,12)}} {{(card.numbercard).slice(12,16)}}</p>
+                  <div class="card__space-75">
+                    <span class="card__label">Card Holder</span>
+                    <p class="card__info">{{card.cardHolder}}</p>
+                  </div>
+                  <div class="card__space-25">
+                    <span class="card__label">Expires</span>
+                          <p class="card__info">{{(card.untilDate).slice(2,7)}}</p>
+                  </div>
+                </div>
+                
+                <div v-if="card.colorCard=='Black'" style="background-color: rgb(19, 18, 18);"class="card__back card__part">
+                  <div class="card__black-line"></div>
+                  <div class="card__back-content">
+                    <div class="card__secret">
+                      <p class="card__secret--last">{{card.cvv}}</p>
+                </div>
+                 
+            </div> 
+        
+              
+                                  
+        </div><!--Final del For de las Tarjetas  -->
+    </div>  <!--Final del Row de las Tarjetas  -->
+</div>  <!--Final del Container Fluid de las Tarjetas  -->
+
+<div class="container-fluid">
+  <div class="row justify-content-center" style="width: 100%;">
+    
+    
+      <div v-for="card in cardDebito" class="card">
+    
+          <div v-if="card.colorCard=='Blue'"style="background-color:rgb(59,18,243);"class="card__front card__part">
+    
+              <p class="card_numer">{{(card.numbercard).slice(0,4)}} {{(card.numbercard).slice(4,8)}} {{(card.numbercard).slice(8,12)}} {{(card.numbercard).slice(12,16)}}</p>
+              <div class="card__space-75">
+                <span class="card__label">Card Holder</span>
+                <p class="card__info">{{card.cardHolder}}</p>
+              </div>
+              <div class="card__space-25">
+                <span class="card__label">Expires</span>
+                      <p class="card__info">{{(card.untilDate).slice(2,7)}}</p>
+              </div>
+          </div>
+            
+          <div v-if="card.colorCard=='Blue'" style="background-color: rgb(59, 18, 243);"class="card__back card__part">
+              <div class="card__black-line"></div>
+              <div class="card__back-content">
+                <div class="card__secret">
+                  <p class="card__secret--last">{{card.cvv}}</p>
+              </div>
+            
+              </div>
+          </div>
+                              
+    </div><!--Final del For de las Tarjetas  -->
+</div>  <!--Final del Row de las Tarjetas  -->
+</div>  <!--Final del Container Fluid de las Tarjetas  -->
+
+
+    </div><!--Final de las Columnas -->
+                
+                
+
+
+
+                <div v-show="cards.length==0" id="Alert1" class="alert alert-warning" role="alert">
+                  Ohhh! You Don't have Cards. 
+                  <a href=»mailto:tarjeta@humanBank.com»>Please request them here!</a>
+                 
+                </div>
+ 
+  
+   <!-- <Comienza el Footer> -->
+
+              <div class="container-fluid"> 
+                
+                <footer class="pt-4 my-md-5 pt-md-5 border-top">
+           
+                  <small class="d-block mb-3 text-muted">&copy; Something New</small>
+                
+                    <div class="col-6 col-md">
+                      <h5>Features</h5>
+                      <ul class="list-unstyled text-small">
+                        <li><a class="text-muted" href="#">Customer Service</a></li>
+                        <li><a class="text-muted" href="#">About Us</a></li>
+                        <li><a class="text-muted" href="#">Promotions</a></li>
+                        
+                      </ul>
+                    
+                    </div>
+                </footer> 
+ 
+                <!-- Footer -->
+                <div class="container-fluid">
+                  <footer style="background-color:rgb(247, 200, 16);text-align: center;">
+                    <h6>  © Copyright 2021 | Follow us! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                     <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+                   </svg> </h6>
+                  </footer>
+                 
+                </div>
+              </div>
+              
+
+
+
+  </main>
+
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./js/cards.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+    crossorigin="anonymous"></script>
+  
+  
+  </body>
+
+</html>

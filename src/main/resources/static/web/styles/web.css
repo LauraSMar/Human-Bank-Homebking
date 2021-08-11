@@ -1,0 +1,164 @@
+
+*
+.body{
+
+      margin: 0px;
+      padding: 0px;
+    
+  }
+.footer{
+ 
+  width: 100%;
+  height: 60px;
+  margin-top: 2em;
+ 
+}
+#bannerCards{
+  
+  width: fit-content;
+  background-color:rgb(105, 212, 245);
+  animation-name: example;
+  animation-duration: 4s;
+}
+@keyframes example {
+  from {background-color: rgb(60, 100, 231);}
+  to {background-color: rgb(0, 195, 255);}
+}
+
+#bannerCards p {
+  animation: 5s infinite slidein;
+}
+
+.main{
+margin-left: 0.5em;
+margin-right: 0.5em; 
+}
+#dateIni{
+text-align: center;
+font-family: Verdana; 
+font-size: 18px; 
+width: 10em;
+color: #ffffff; 
+background:#bae1f1;
+border-radius:10px ;
+margin-top: 2em;
+}
+#dateEnd{
+  text-align: center;
+  font-family: Verdana; 
+  font-size: 18px; 
+  width: 10em;
+  color: #ffffff; 
+  background:#f1bad1;
+  border-radius:10px ;
+  margin-bottom: 2em;
+  }
+
+
+ #datetable1{
+   margin-top: 2em;
+   justify-content: center;
+   text-align: center;
+   align-items: center;
+   border-radius:10px ;
+   opacity: 0.95;
+   font-size: 13px;
+   background-color: aliceblue;
+ }
+ 
+#datetable{
+  margin-top: 3em;
+  justify-content: center;
+  border-radius:10px ;
+  opacity: 0.95;
+  width:60%;
+  font-size: 14px;
+  background-color: rgb(185, 214, 240);
+}
+*td{
+  text-align: right;
+  font-size: 15px;
+}
+
+#Alert{
+ 
+  justify-content:center;
+  width: 100%;
+  border-style: solid 2px;
+  height: fit-content;
+  background-color:rgb(105, 212, 245);
+  animation-name: example;
+  animation-duration: 4s;
+}
+@keyframes example {
+  from {background-color: rgb(60, 100, 231);}
+  to {background-color: rgb(0, 195, 255);}
+}
+
+#Alert1{
+  align-self: center;
+  /* width: 50%;  */
+  border-style: solid 2px;
+  height: fit-content;
+  width: 300px; 
+  height: 100px;
+  text-align: center;
+  background-color:rgb(245, 214, 41);
+  animation-name: example;
+  animation-duration: 4s;
+}
+@keyframes example {
+  from {background-color: rgb(231, 114, 60);}
+  to {background-color: yellow;}
+}
+#exampleModal3,#exampleModal{
+  margin:auto
+}
+
+#TransferForm,#ModalCards,#LoanForm,#datePDF{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  box-shadow: 1px,2px,10px;
+  margin: 0;
+  width: 100%;
+}
+#TransferForm, #ModalCards,#LoanForm,#datePDF{
+  text-decoration: blue;
+  text-align: center;
+  background-image: linear-gradient(to right top, #eaeba2, #d7e054, #e5e48e, #a4dde7, #e2eec7);
+  box-shadow: 1px,2px,10px;
+}
+#ModalCards{
+  text-decoration: blue;
+  text-align: center;
+  background-image: linear-gradient(to right top, #eaeba2, #d7e054, #e5e48e, #a4dde7, #e2eec7);
+  box-shadow: 1px,2px,10px;
+}
+
+#Form1{
+  align-self: flex-end;
+  width:25%;
+  margin-left: 2em;
+  margin-right: 2em;
+  box-shadow: 1px,2px,10px;
+}
+#logo{
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
+}
+#loguito{
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+}
+
+#logo1{
+  margin-bottom: 4em;
+  width: 60px;
+  height: 40px;
+  border-radius: 5px;
+}
+
